@@ -23,12 +23,12 @@ fetch(urlApi)
             let itemTitle = document.createElement("h3");
             article.appendChild(itemTitle);
             itemTitle.classList.add("productName");
-            itemTitle.innerText += info.name;
+            itemTitle.textContent += info.name;
 
             let itemDescription = document.createElement("p");
             article.appendChild(itemDescription);
             itemDescription.classList.add("productDescription");
-            itemDescription.innerText += info.description;
+            itemDescription.textContent += info.description;
 
         }
                 
