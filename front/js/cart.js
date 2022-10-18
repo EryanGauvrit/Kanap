@@ -1,20 +1,21 @@
 console.log(localStorage);
 
+let calculPrice;
+let totalPrice = 0;
+let totalQuantity = 0;
+
 for( let i = 0; i < localStorage.length; i++){
     let storageIdentity = localStorage.key(i);
     storageIdentity = localStorage.getItem(storageIdentity);
     let objItemSettings = JSON.parse(storageIdentity);
-    console.log(objItemSettings);
 
     let id = objItemSettings.id;
-    console.log(id);
 
     fetch (`http://localhost:3000/api/products/${id}`)
         .then(function(response){
             return response.json();
         })
         .then(function(data){
-            console.log(data);
 
             let article = document.createElement("article");
             document.querySelector("#cart__items").appendChild(article);
@@ -50,7 +51,9 @@ for( let i = 0; i < localStorage.length; i++){
 
                     let productPrice = document.createElement("p");
                     cartDescritpion.appendChild(productPrice);
-                    productPrice.textContent += data.price + ",00 €";
+                    calculPrice = Number(data.price) * Number(objItemSettings.quantité);
+                    totalPrice += Number(calculPrice);
+                    productPrice.textContent +=  calculPrice + ",00 €";
             
             // Affichage de la quantité / le système de suppression
 
@@ -74,6 +77,7 @@ for( let i = 0; i < localStorage.length; i++){
                             inputQuantity.min = "1";
                             inputQuantity.max = "100";
                             inputQuantity.value = objItemSettings.quantité;
+                            totalQuantity += Number(objItemSettings.quantité);
 
                     let productDelete = document.createElement("div");
                     cartSettings.appendChild(productDelete);
@@ -84,12 +88,62 @@ for( let i = 0; i < localStorage.length; i++){
                             deleteItem.classList.add("deleteItem");
                             deleteItem.textContent = "Supprimer";
 
+                document.getElementById("totalQuantity")
+                        .textContent = totalQuantity; 
+                document.getElementById("totalPrice")
+                        .textContent = totalPrice + ",00"; 
+
+
+            // Gestion de la modification de la quantité
+            inputQuantity.addEventListener('change', function (){
+
+                if (this.value >= 1 && this.value <= 100 ){
+                        objItemSettings.quantité = this.value;
+                        console.log(objItemSettings.quantité);
+                        objItemSettings = JSON.stringify(objItemSettings);
+                        localStorage.setItem(localStorage.key(i), objItemSettings);
+                        objItemSettings = JSON.parse(objItemSettings);
+                        console.log(objItemSettings);
+                        calculPrice = Number(data.price) * Number(this.value);
+                        totalPrice += Number(calculPrice);
+
+                        productPrice.textContent =  calculPrice + ",00 €";
+                        document.getElementById("totalQuantity")
+                                .textContent = totalQuantity; 
+                        document.getElementById("totalPrice")
+                                .textContent = totalPrice + ",00"; 
+                        
+                }else {
+                alert("Entrer une quantité entre 1 et 100.");
+                this.value = "";
+                }           
+            })        
+
+            // Gestion de la suppression de produits dans le panier 
+            productDelete.addEventListener('click', function(){
+                objItemSettings = JSON.stringify(objItemSettings);
+                localStorage.removeItem(localStorage.key(i), objItemSettings);
+                objItemSettings = JSON.parse(objItemSettings);
+                console.log(localStorage.length);
+                location.reload();
+            })
         })
         .catch(function (e){
-            console.log("Il y a une erreur ..." + e);
+            alert("ERREUR : " + e);
         })
 
 }
+
+
+// Gestion des données du formulaire
+
+
+
+
+
+
+
+
 
 
 
