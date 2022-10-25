@@ -4,8 +4,6 @@ let calculPrice;
 let calculQuantity;
 let totalPrice = 0;
 let totalQuantity = 0;
-let commande = localStorage;
-
 
 
 fetch (`http://localhost:3000/api/products/`)
@@ -203,22 +201,13 @@ document.querySelector(".cart__order__form").addEventListener("submit", function
         let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
         let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
         let cityErrorMsg = document.getElementById("cityErrorMsg");
+        let emailErrorMsg = document.getElementById("emailErrorMsg");
         let error;
 
         
         let majuscule = /[A-Z]/;
         let nombre = /[0-9]/;
-
-        let objContact = {
-                prénom : firstName,
-                nom : lastName,
-                adresse : address,
-                ville : city,
-                email : email,
-                commande : commande
-        }
-
-        console.log(objContact.commande);
+        let emailVerification = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         // Champs prénom
         if (firstName.search(majuscule) != 0 || firstName.search(nombre) != -1 || firstName.length >= 15){
@@ -250,31 +239,68 @@ document.querySelector(".cart__order__form").addEventListener("submit", function
                 error.textContent = "";
         }
 
-        // Validation de la commande
-        if (firstNameErrorMsg.textContent == "" && lastNameErrorMsg.textContent == "" && cityErrorMsg.textContent == ""){
-                
-                if (localStorage['contact']){
-                        objContact = localStorage.getItem('contact');
-                        objContact = JSON.parse(objContact);
-                        localStorage.removeItem('contact');
-                        objContact.prénom = firstName;
-                        objContact.nom = lastName;
-                        objContact.adresse = address;
-                        objContact.ville = city;
-                        objContact.email = email;
-                        objContact.commande = commande;                        
-                        objContact = JSON.stringify(objContact);
-                        objContact = localStorage.setItem('contact',objContact);
-                        console.log ('Ca existe');
-                }else{
-                        objContact = JSON.stringify(objContact)
-                        localStorage.setItem("contact", objContact);
-                        console.log ('Ca existe pas');
-                }
+        if(!emailVerification.test(email)){
+                error = emailErrorMsg
+                error.textContent = "Entrez une adresse email vailde.";
+                e.preventDefault();
+        }else{
+                error = emailErrorMsg
+                error.textContent = "";
         }
 
+        // Validation de la commande
+        if (firstNameErrorMsg.textContent == "" && lastNameErrorMsg.textContent == "" && cityErrorMsg.textContent == "" && emailErrorMsg.textContent == ""){
 
+                let productId = [];
 
+                for( let i = 0; i < localStorage.length; i++){
+                        let storageIdentity = localStorage.key(i);
+                        storageIdentity = localStorage.getItem(storageIdentity);
+                        let objItemSettings = JSON.parse(storageIdentity);
+                        objItemSettings.id = String(objItemSettings.id)
+                        console.log(typeof(objItemSettings.id));
+                        productId.push(objItemSettings.id);
+                }
+
+                let order = {
+                        contact : {
+                                firstName : firstName,
+                                lastName : lastName,
+                                address : address,
+                                city : city,
+                                email : email,
+                        },
+
+                        products : productId
+                }
+
+                // préparation de la requête
+                request =  {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json;charset=utf-8" },
+                        body: JSON.stringify(order)                        
+                };
+
+                fetch("http://localhost:3000/api/products/order", request)
+                        .then(function(response){
+                                return response.json();
+                        })
+                        .then(function(data){
+
+                                if (localStorage.length >= 0){
+                                        localStorage.clear();
+                                        localStorage.setItem("orderNbr", data.orderId);
+                                        console.log(localStorage);
+
+                                        document.location.href = "confirmation.html";
+                                }else{
+                                        alert("Le panier est vide.");                                
+                                }            
+                        })
+                        .catch(function(e){
+                                        alert ("Une erreur s'est produite : " + e);                                                      
+                        })
+        }
 })
 
 
