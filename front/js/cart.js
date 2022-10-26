@@ -289,10 +289,8 @@ document.querySelector(".cart__order__form").addEventListener("submit", function
 
                                 if (localStorage.length >= 0){
                                         localStorage.clear();
-                                        localStorage.setItem("orderNbr", data.orderId);
-                                        console.log(localStorage);
 
-                                        document.location.href = "confirmation.html";
+                                        document.location.href = "confirmation.html?orderId=" + data.orderId;
                                 }else{
                                         alert("Le panier est vide.");                                
                                 }            
