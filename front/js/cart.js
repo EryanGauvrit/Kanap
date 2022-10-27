@@ -136,6 +136,7 @@ fetch (`http://localhost:3000/api/products/`)
                                                         let domRemove = article.closest(".cart__item");
                                                         domRemove.remove();  
                                                         calculatePriceQuantity (storageIdentity, data);
+                                                        localStorageIsEmpty();
                                                 }else{
                                                         alert("Une erreur est survenue");
                                                 }
@@ -145,6 +146,7 @@ fetch (`http://localhost:3000/api/products/`)
                                 }
                         }               
                 }
+                localStorageIsEmpty();
         })
         .catch(function (e){
                 alert("ERREUR : " + e);
@@ -185,9 +187,20 @@ function calculatePriceQuantity (storageIdentity, data){
         };
 }
 
+// Si le local storage est vide alors on affiche une quantité et un prix de 0
+function localStorageIsEmpty(){
+        
+        if(localStorage.length <= 0){
+
+                document.getElementById("totalQuantity")
+                .textContent = 0; 
+
+                document.getElementById("totalPrice")
+                .textContent = 0 + ",00"; 
+        }
+}
+
 // Gestion des données du formulaire
-
-
 
 document.querySelector(".cart__order__form").addEventListener("submit", function (e){
         e.preventDefault();

@@ -13,9 +13,7 @@ fetch(urlApi)
             productImage.src = data.imageUrl;
             productImage.alt = data.altTxt;
 
-        let productName = document.createElement("h1");
-            document.querySelector(".item__content__titlePrice").appendChild(productName);
-            productName.id = "title";
+        let productName = document.querySelector("#title");            
             productName.textContent += data.name;
 
         let productPrice = document.getElementById("price");
@@ -47,6 +45,7 @@ fetch(urlApi)
         document.querySelector("#title").style.fontSize = "25px";
         document.querySelector("#title").style.marginBottom = "15px";
         document.querySelector("p").style.display = "none";
+        document.querySelector(".item__img").style.display = "none";
         document.querySelector(".item__content__description").style.display = "none";
         document.querySelector(".item__content__settings").style.display = "none";
         document.querySelector(".item__content__addButton").style.display = "none";
