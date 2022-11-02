@@ -31,7 +31,6 @@ fetch(urlApi)
         
     })
     .catch (function(e){
-        console.log("Une erreur est survenue"+ e);
         document.querySelector("#title").textContent = 'Une erreur est survenue : ' + e;
 
         let linkBack =  document.createElement("a");  
@@ -90,8 +89,6 @@ function itemSettings (){
     }else {
         alert("Choisir une couleur existante et entrer une quantité entre 1 et 100.");
     }
-    
-    console.log(localStorage);
 };
 
 document.querySelector("#addToCart").addEventListener("click", itemSettings);

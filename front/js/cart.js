@@ -1,5 +1,3 @@
-console.log(localStorage);
-
 let calculPrice;
 let calculQuantity;
 let totalPrice = 0;
@@ -17,8 +15,6 @@ fetch (`http://localhost:3000/api/products/`)
                         let storageIdentity = localStorage.key(i);
                         storageIdentity = localStorage.getItem(storageIdentity);
                         let objItemSettings = JSON.parse(storageIdentity);
-
-                        console.log(objItemSettings);
                 
                         let id = objItemSettings.id;
 
@@ -111,11 +107,9 @@ fetch (`http://localhost:3000/api/products/`)
 
                                                 if (this.value >= 1 && this.value <= 100 ){
                                                         objItemSettings.quantité = this.value;
-                                                        console.log(objItemSettings.quantité);
                                                         objItemSettings = JSON.stringify(objItemSettings);
                                                         localStorage.setItem(localStorage.key(i), objItemSettings);
-                                                        objItemSettings = JSON.parse(objItemSettings);
-                                                        console.log(objItemSettings);                                                        
+                                                        objItemSettings = JSON.parse(objItemSettings);                                                   
                                                         calculPrice = Number(productData.price) * Number(this.value);
                                                         productPrice.textContent =  calculPrice + ",00 €";
 
@@ -129,8 +123,6 @@ fetch (`http://localhost:3000/api/products/`)
 
                                         // Gestion de la suppression de produits dans le panier 
                                         productDelete.addEventListener('click', function(){
-                                                console.log(article.dataset.id);
-                                                console.log(objItemSettings);
                                                 if (article.dataset.id == objItemSettings.id){                                                        
                                                         localStorage.removeItem(storageIdentity);
                                                         let domRemove = article.closest(".cart__item");
@@ -172,8 +164,6 @@ function calculatePriceQuantity (storageIdentity, data){
                         if (data[info]._id == storage.id){
 
                                 calculPrice = Number(data[info].price) * Number(storage.quantité);
-                                console.log(data[info].price);
-                                console.log(info);
                                 totalPrice += Number(calculPrice);
                                 document.getElementById("totalPrice")
                                 .textContent = totalPrice + ",00"; 
@@ -271,7 +261,6 @@ document.querySelector(".cart__order__form").addEventListener("submit", function
                         storageIdentity = localStorage.getItem(storageIdentity);
                         let objItemSettings = JSON.parse(storageIdentity);
                         objItemSettings.id = String(objItemSettings.id)
-                        console.log(typeof(objItemSettings.id));
                         productId.push(objItemSettings.id);
                 }
 
