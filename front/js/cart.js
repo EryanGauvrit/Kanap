@@ -207,10 +207,10 @@ document.querySelector(".cart__order__form").addEventListener("submit", function
         let emailErrorMsg = document.getElementById("emailErrorMsg");
         let error;
 
-        
-        let majuscule = /[A-Z]/;
-        let nombre = /[0-9]/;
-        let emailVerification = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        // Initialisation des Regex
+        const majuscule = /[A-Z]/;
+        const nombre = /[0-9]/;
+        const emailVerification = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         // Champs prénom
         if (firstName.search(majuscule) != 0 || firstName.search(nombre) != -1 || firstName.length >= 15){
