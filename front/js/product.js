@@ -53,12 +53,9 @@ fetch(urlApi)
 
 // Enregistrement des données sur le localStorage
 
-let color;
-let quantity;
-
 function itemSettings (){
-    color = document.querySelector("#colors");
-    quantity = document.querySelector("#quantity");
+    let color = document.querySelector("#colors");
+    let quantity = document.querySelector("#quantity");
     let errorNbr =  "Vous dépassez la somme autorisés d'un même type d'articles dans votre panier.";
     let storageIdentity = "itemSettings" + idUrl + color.value;
 
