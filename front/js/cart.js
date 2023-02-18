@@ -4,7 +4,7 @@ let totalPrice = 0;
 let totalQuantity = 0;
 
 
-fetch (`http://localhost:3000/api/products/`)
+fetch (`http://localhost:3000/api/products`)
         .then(function(response){
             return response.json();
         })
