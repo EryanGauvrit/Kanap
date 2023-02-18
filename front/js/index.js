@@ -10,7 +10,7 @@ fetch(urlApi)
 
             let itemLink = document.createElement("a");
             document.querySelector(".items").appendChild(itemLink);
-            itemLink.href = `./product.html?id=${info._id}`;
+            itemLink.href = `./front/html/product.html?id=${info._id}`;
 
             let article = document.createElement("article");
             itemLink.appendChild(article);
