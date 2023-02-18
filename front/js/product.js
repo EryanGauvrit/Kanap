@@ -8,6 +8,8 @@ fetch(urlApi)
     })
     .then(function(data){
         // Ajout des bonnes données dans le DOM
+        document.title = data.name;
+        
         let productImage = document.createElement("img");
             document.querySelector(".item__img").appendChild(productImage);
             productImage.src = data.imageUrl;

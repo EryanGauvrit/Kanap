@@ -2,13 +2,16 @@ let calculPrice;
 let calculQuantity;
 let totalPrice = 0;
 let totalQuantity = 0;
+let urlApi = 'http://localhost:3000/api/products';
 
 
-fetch (`http://localhost:3000/api/products`)
+fetch (urlApi)
         .then(function(response){
             return response.json();
         })
         .then(function(data){
+
+                document.title = 'Panier';
 
                 // Récupération des données du local Storage
                 for( let i = 0; i < localStorage.length; i++){
@@ -142,7 +145,7 @@ fetch (`http://localhost:3000/api/products`)
         })
         .catch(function (e){
                 alert("ERREUR : " + e);
-        })
+        });
 
 // Fonction calcul prix total et articles total
 
